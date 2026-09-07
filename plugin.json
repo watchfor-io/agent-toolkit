@@ -2,7 +2,7 @@
 	"$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
 	"name": "watchfor",
 	"version": "1.0.0",
-	"description": "Uptime & infrastructure monitoring for AI agents — check what's down, diagnose incidents, and manage monitors for websites, APIs, SSL, DNS, cron jobs and MCP servers via watchfor.io.",
+	"description": "Uptime & infrastructure monitoring for AI agents — check what's down, run live diagnostics from 20 locations (DNS, propagation, TLS, headers, ping, traceroute, ports), diagnose incidents, and manage monitors for websites, APIs, SSL, DNS, cron jobs and MCP servers via watchfor.io.",
 	"author": {
 		"name": "WatchFor",
 		"email": "hello@watchfor.io",
@@ -19,6 +19,8 @@
 		"dns",
 		"mcp",
 		"observability",
-		"alerting"
+		"alerting",
+		"diagnostics",
+		"a2a"
 	]
 }

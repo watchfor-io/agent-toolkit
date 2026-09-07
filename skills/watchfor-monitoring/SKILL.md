@@ -1,12 +1,13 @@
 ---
 name: watchfor-monitoring
-description: Monitor websites, APIs, SSL certificates, DNS, cron jobs and MCP servers with WatchFor (watchfor.io). Use when the user wants to check whether something is up, diagnose an outage or incident, create/manage uptime monitors or alert rules, schedule maintenance windows, or get uptime/reliability reports. Works via the WatchFor REST API or MCP server with an API key or OAuth.
+description: Monitor websites, APIs, SSL certificates, DNS, cron jobs and MCP servers with WatchFor (watchfor.io). Use when the user wants to check whether something is up, run an on-demand check from a specific region (DNS propagation, TLS grade, HTTP headers, ping, traceroute, open ports, e-mail policy), diagnose an outage or incident, create/manage uptime monitors or alert rules, schedule maintenance windows, or get uptime/reliability reports. Works via the WatchFor REST API or MCP server with an API key or OAuth.
 ---
 
 # WatchFor monitoring
 
 WatchFor is an uptime & infrastructure monitoring platform with 25 check
-types and multi-location **confirmed** alerting (Down = verified from
+types, 18 on-demand diagnostics from its own probe fleet, and multi-location
+**confirmed** alerting (Down = verified from
 several regions; one failed check = Degraded, not an outage).
 
 ## Setup
@@ -34,6 +35,24 @@ REST alternative: `https://watchfor.io/api/v1` — same auth, OpenAPI 3.1 at
 3. `get_monitor_checks` with `success=false` for the affected monitor — the
    failing probes with per-location detail.
 4. Report: affected monitor, rule, duration, likely cause, next step.
+
+**Investigate something that is not monitored yet**
+Monitors tell you what has been happening; diagnostics tell you what is true
+right now, from a specific place. Use them when the question is "has DNS
+propagated?", "what does the server return from Germany?", "is the port open
+from Singapore?".
+1. `list_diagnostics` — the 18 checks, what each answers, and the allowance
+   left on the plan.
+2. `run_diagnostic` with a slug (`dns-lookup`, `dns-propagation`, `tls-grade`,
+   `http-headers`, `ping`, `traceroute`, `port-checker`, `email-health`, …),
+   a target and an optional location.
+3. Or `diagnose_target` — DNS, propagation, TLS, headers and ping from up to
+   three regions in one call, returned as a single verdict with findings.
+
+A check that fails or times out comes back **successful HTTP with
+`success:false`** — that is the answer, not an error. Runs share the plan
+allowance with the dashboard's Toolbox, so pace them: the response carries
+what is left.
 
 **Create a monitor**
 1. ALWAYS call `get_monitor_types` first — it lists every type's target
