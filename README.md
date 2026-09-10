@@ -30,9 +30,10 @@ All surfaces share the same auth (org-scoped API key or OAuth 2.1) and per-plan 
 
 Agents can also *investigate*, not just read: 18 on-demand checks run from the probe
 fleet — DNS, DNS propagation, TLS grade, HTTP headers, ping, traceroute, ports,
-blocklists, e-mail policy, Core Web Vitals and more — plus `diagnose_target`, which
-bundles the common ones into a single verdict. A model can reason about a website; it has
-no machine in 20 locations. Runs share the plan allowance with the dashboard's Toolbox.
+blocklists, e-mail policy, Core Web Vitals, global CDN analysis and more — plus
+`diagnose_target`, which bundles the common ones into a single verdict. A model can
+reason about a website; it has no machine in 20 locations. Runs share the plan
+allowance with the dashboard's Toolbox.
 
 - REST — `POST /v1/diagnostics/{slug}` · catalog at `GET /v1/diagnostics`
 - MCP — `list_diagnostics`, `run_diagnostic`, `diagnose_target`
