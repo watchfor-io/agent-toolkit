@@ -1,6 +1,6 @@
 # WatchFor Agent Toolkit
 
-[![smithery badge](https://smithery.ai/badge/hello-65wl/watchfor)](https://smithery.ai/servers/hello-65wl/watchfor) [![agentic score](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fis-agentic.com%2Fapi%2Fv1%2Freport%3Furl%3Dwatchfor.io&query=%24.score&suffix=%2F100&label=agentic%20score&color=brightgreen)](https://is-agentic.com/scan/watchfor.io)
+[![smithery badge](https://smithery.ai/badge/hello-65wl/watchfor)](https://smithery.ai/servers/hello-65wl/watchfor) <a href="https://ora.ai/scan/watchfor.io"><img src="https://ora.ai/api/badge/watchfor.io" alt="ora agent-readiness score" height="76" /></a> <a href="https://is-agentic.com/scan/watchfor.io"><img src="https://watchfor.io/api/badge/is-agentic" alt="is-agentic agent readiness score" height="76" /></a>
 
 Agent-facing tooling for **[WatchFor](https://watchfor.io)** — uptime & infrastructure monitoring built to be operated by AI agents as comfortably as by humans.
 
