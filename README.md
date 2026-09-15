@@ -1,6 +1,6 @@
 # WatchFor Agent Toolkit
 
-[![smithery badge](https://smithery.ai/badge/hello-65wl/watchfor)](https://smithery.ai/servers/hello-65wl/watchfor) <a href="https://ora.ai/scan/watchfor.io"><img src="https://ora.ai/api/badge/watchfor.io" alt="ora agent-readiness score" height="76" /></a> <a href="https://is-agentic.com/scan/watchfor.io"><img src="https://watchfor.io/api/badge/is-agentic" alt="is-agentic agent readiness score" height="76" /></a>
+<a href="https://ora.ai/scan/watchfor.io"><img src="https://ora.ai/api/badge/watchfor.io" alt="ora agent-readiness score" height="76" /></a> <a href="https://is-agentic.com/scan/watchfor.io"><img src="https://watchfor.io/api/badge/is-agentic" alt="is-agentic agent readiness score" height="76" /></a>
 
 Agent-facing tooling for **[WatchFor](https://watchfor.io)** — uptime & infrastructure monitoring built to be operated by AI agents as comfortably as by humans.
 
@@ -19,11 +19,24 @@ WatchFor monitors websites, APIs, SSL certificates, DNS, email, cron jobs and MC
 
 All surfaces share the same auth (org-scoped API key or OAuth 2.1) and per-plan rate limits:
 
-- **REST API** — `https://watchfor.io/api/v1` · [OpenAPI 3.1 spec](https://watchfor.io/openapi.json) (57 operations, cursor pagination, `Idempotency-Key`, typed JSON errors)
-- **MCP server** (37 tools, Streamable HTTP) — `https://watchfor.io/api/mcp` · [manifest](https://watchfor.io/.well-known/mcp.json) · [Smithery listing](https://smithery.ai/servers/hello-65wl/watchfor)
+- **REST API** — `https://watchfor.io/api/v1` · [OpenAPI 3.1 spec](https://watchfor.io/openapi.json) (66 operations, cursor pagination, `Idempotency-Key`, typed JSON errors)
+- **MCP server** (45 tools, Streamable HTTP) — `https://watchfor.io/api/mcp` · [manifest](https://watchfor.io/.well-known/mcp.json) · [Smithery listing](https://smithery.ai/servers/hello-65wl/watchfor)
 - **Documentation MCP server** (read-only, no auth) — `https://watchfor.io/api/docs-mcp`
-- **A2A agent** (13 skills, JSON-RPC) — `https://watchfor.io/api/a2a` · [Agent Card](https://watchfor.io/.well-known/agent-card.json)
+- **A2A agent** (16 skills, JSON-RPC) — `https://watchfor.io/api/a2a` · [Agent Card](https://watchfor.io/.well-known/agent-card.json)
 - **No-auth sandbox** — `https://watchfor.io/api/v1/sandbox` (sample data in exact production shapes)
+- **WebMCP (in-page tools)** — nine tools registered on `document.modelContext` across watchfor.io, so an agent-capable browser can search the docs, open the free tools and start a website audit without an account or a key · [WebMCP audit](https://webmcp.ora.ai/watchfor.io)
+
+### Live diagnostics
+
+Agents can also *investigate*, not just read: 18 on-demand checks run from the probe
+fleet — DNS, DNS propagation, TLS grade, HTTP headers, ping, traceroute, ports,
+blocklists, e-mail policy, Core Web Vitals and more — plus `diagnose_target`, which
+bundles the common ones into a single verdict. A model can reason about a website; it has
+no machine in 20 locations. Runs share the plan allowance with the dashboard's Toolbox.
+
+- REST — `POST /v1/diagnostics/{slug}` · catalog at `GET /v1/diagnostics`
+- MCP — `list_diagnostics`, `run_diagnostic`, `diagnose_target`
+- A2A — the `diagnose` skill
 
 ## SDKs
 
