@@ -1,0 +1,14 @@
+{
+	"mcpServers": {
+		"watchfor": {
+			"type": "http",
+			"url": "https://watchfor.io/api/mcp",
+			"note": "Product server — 37 tools over monitors, incidents, alert rules, maintenance windows and contacts. Anonymous initialize/tools-list; tool calls need OAuth 2.1 (auto-discovered) or an API key: Authorization: Bearer wf_live_…"
+		},
+		"watchfor-docs": {
+			"type": "http",
+			"url": "https://watchfor.io/api/docs-mcp",
+			"note": "Documentation server — read-only list_docs/search_docs/read_doc, no authentication."
+		}
+	}
+}

@@ -1,0 +1,24 @@
+{
+	"$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+	"name": "watchfor",
+	"version": "1.0.0",
+	"description": "Uptime & infrastructure monitoring for AI agents — check what's down, diagnose incidents, and manage monitors for websites, APIs, SSL, DNS, cron jobs and MCP servers via watchfor.io.",
+	"author": {
+		"name": "WatchFor",
+		"email": "hello@watchfor.io",
+		"url": "https://watchfor.io"
+	},
+	"homepage": "https://watchfor.io",
+	"repository": "https://github.com/watchfor-io/agent-toolkit",
+	"license": "MIT",
+	"keywords": [
+		"uptime-monitoring",
+		"monitoring",
+		"incidents",
+		"ssl",
+		"dns",
+		"mcp",
+		"observability",
+		"alerting"
+	]
+}
