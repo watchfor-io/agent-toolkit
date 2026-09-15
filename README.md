@@ -1,6 +1,6 @@
 # WatchFor Agent Toolkit
 
-[![smithery badge](https://smithery.ai/badge/hello-65wl/watchfor)](https://smithery.ai/servers/hello-65wl/watchfor)
+[![smithery badge](https://smithery.ai/badge/hello-65wl/watchfor)](https://smithery.ai/servers/hello-65wl/watchfor) [![agentic score](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fis-agentic.com%2Fapi%2Fv1%2Freport%3Furl%3Dwatchfor.io&query=%24.score&suffix=%2F100&label=agentic%20score&color=brightgreen)](https://is-agentic.com/scan/watchfor.io)
 
 Agent-facing tooling for **[WatchFor](https://watchfor.io)** — uptime & infrastructure monitoring built to be operated by AI agents as comfortably as by humans.
 
