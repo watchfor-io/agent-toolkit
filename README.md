@@ -19,16 +19,16 @@ WatchFor monitors websites, APIs, SSL certificates, DNS, email, cron jobs and MC
 
 All surfaces share the same auth (org-scoped API key or OAuth 2.1) and per-plan rate limits:
 
-- **REST API** — `https://watchfor.io/api/v1` · [OpenAPI 3.1 spec](https://watchfor.io/openapi.json) (66 operations, cursor pagination, `Idempotency-Key`, typed JSON errors)
-- **MCP server** (45 tools, Streamable HTTP) — `https://watchfor.io/api/mcp` · [manifest](https://watchfor.io/.well-known/mcp.json) · [Smithery listing](https://smithery.ai/servers/hello-65wl/watchfor)
+- **REST API** — `https://watchfor.io/api/v1` · [OpenAPI 3.1 spec](https://watchfor.io/openapi.json) (69 operations, cursor pagination, `Idempotency-Key`, typed JSON errors)
+- **MCP server** (48 tools, Streamable HTTP) — `https://watchfor.io/api/mcp` · [manifest](https://watchfor.io/.well-known/mcp.json) · [Smithery listing](https://smithery.ai/servers/hello-65wl/watchfor)
 - **Documentation MCP server** (read-only, no auth) — `https://watchfor.io/api/docs-mcp`
-- **A2A agent** (16 skills, JSON-RPC) — `https://watchfor.io/api/a2a` · [Agent Card](https://watchfor.io/.well-known/agent-card.json)
+- **A2A agent** (17 skills, JSON-RPC) — `https://watchfor.io/api/a2a` · [Agent Card](https://watchfor.io/.well-known/agent-card.json)
 - **No-auth sandbox** — `https://watchfor.io/api/v1/sandbox` (sample data in exact production shapes)
 - **WebMCP (in-page tools)** — nine tools registered on `document.modelContext` across watchfor.io, so an agent-capable browser can search the docs, open the free tools and start a website audit without an account or a key · [WebMCP audit](https://webmcp.ora.ai/watchfor.io)
 
 ### Live diagnostics
 
-Agents can also *investigate*, not just read: 18 on-demand checks run from the probe
+Agents can also *investigate*, not just read: 22 on-demand checks run from the probe
 fleet — DNS, DNS propagation, TLS grade, HTTP headers, ping, traceroute, ports,
 blocklists, e-mail policy, Core Web Vitals, global CDN analysis and more — plus
 `diagnose_target`, which bundles the common ones into a single verdict. A model can

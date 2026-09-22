@@ -1,13 +1,12 @@
 ---
 name: watchfor-monitoring
-description: Monitor websites, APIs, SSL certificates, DNS, cron jobs and MCP servers with WatchFor (watchfor.io). Use when the user wants to check whether something is up, run an on-demand check from a specific region (DNS propagation, TLS grade, HTTP headers, ping, traceroute, open ports, e-mail policy), diagnose an outage or incident, create/manage uptime monitors or alert rules, schedule maintenance windows, or get uptime/reliability reports. Works via the WatchFor REST API or MCP server with an API key or OAuth.
+description: Monitor websites, APIs, SSL certificates, DNS, cron jobs, MCP servers and Linux servers (hosts running watchfor-agent) with WatchFor (watchfor.io). Use when the user wants to check whether something is up, diagnose an outage or incident, create/manage uptime monitors or alert rules, schedule maintenance windows, or get uptime/reliability reports. Works via the WatchFor REST API or MCP server with an API key or OAuth.
 ---
 
 # WatchFor monitoring
 
 WatchFor is an uptime & infrastructure monitoring platform with 25 check
-types, 18 on-demand diagnostics from its own probe fleet, and multi-location
-**confirmed** alerting (Down = verified from
+types and multi-location **confirmed** alerting (Down = verified from
 several regions; one failed check = Degraded, not an outage).
 
 ## Setup
@@ -36,24 +35,6 @@ REST alternative: `https://watchfor.io/api/v1` — same auth, OpenAPI 3.1 at
    failing probes with per-location detail.
 4. Report: affected monitor, rule, duration, likely cause, next step.
 
-**Investigate something that is not monitored yet**
-Monitors tell you what has been happening; diagnostics tell you what is true
-right now, from a specific place. Use them when the question is "has DNS
-propagated?", "what does the server return from Germany?", "is the port open
-from Singapore?".
-1. `list_diagnostics` — the 18 checks, what each answers, and the allowance
-   left on the plan.
-2. `run_diagnostic` with a slug (`dns-lookup`, `dns-propagation`, `tls-grade`,
-   `http-headers`, `ping`, `traceroute`, `port-checker`, `email-health`, …),
-   a target and an optional location.
-3. Or `diagnose_target` — DNS, propagation, TLS, headers and ping from up to
-   three regions in one call, returned as a single verdict with findings.
-
-A check that fails or times out comes back **successful HTTP with
-`success:false`** — that is the answer, not an error. Runs share the plan
-allowance with the dashboard's Toolbox, so pace them: the response carries
-what is left.
-
 **Create a monitor**
 1. ALWAYS call `get_monitor_types` first — it lists every type's target
    format, config fields and the EXACT alert-metric strings.
@@ -77,3 +58,19 @@ what is left.
 - Do not use WatchFor for logs, APM traces or metrics ingestion.
 
 More: <https://watchfor.io/agents.md> · <https://watchfor.io/docs/api>
+
+## Servers (hosts)
+
+A host is a Linux server running the open-source watchfor-agent; the token
+is issued in the dashboard (Hosts → Add host), everything after that is
+readable by agents:
+
+- `list_hosts` (REST `GET /v1/hosts?status=offline`) — who is online, stale
+  (no batch for 90 s) or offline (10 min), with current CPU / memory / disk.
+- `get_host` — OS, agent version, hardware, addresses and the host's
+  `monitor_id`: use it wherever a monitor id is expected (incidents,
+  status-page components, maintenance windows, uptime).
+- `get_host_metrics` — time series over 1h–30d: `cpu.usage_pct`,
+  `mem.used_pct`, `disk.used_pct` (per mount), `load.1`, `net.rx_bytes_per_s`…
+  Answer "was CPU high last night" from data, not guesses.
+- A2A: the `check-hosts` skill summarises the fleet in one call.

@@ -21,6 +21,8 @@
 		"observability",
 		"alerting",
 		"diagnostics",
-		"a2a"
+		"a2a",
+		"hosts",
+		"server-monitoring"
 	]
 }
