@@ -3,7 +3,7 @@
 		"watchfor": {
 			"type": "http",
 			"url": "https://watchfor.io/api/mcp",
-			"note": "Product server — 48 tools over monitors, hosts (servers running watchfor-agent), incidents, alert rules, maintenance windows, contacts and live diagnostics (22 on-demand checks from the probe fleet). Anonymous initialize/tools-list; tool calls need OAuth 2.1 (auto-discovered) or an API key: Authorization: Bearer wf_live_…"
+			"note": "Product server — 54 tools over monitors, hosts (servers running watchfor-agent), status pages, on-call, notification channels, incidents, alert rules, maintenance windows, contacts and live diagnostics (22 on-demand checks from the probe fleet). Anonymous initialize/tools-list; tool calls need OAuth 2.1 (auto-discovered) or an API key: Authorization: Bearer wf_live_…"
 		},
 		"watchfor-docs": {
 			"type": "http",
