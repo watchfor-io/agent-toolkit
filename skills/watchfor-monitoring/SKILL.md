@@ -62,11 +62,12 @@ More: <https://watchfor.io/agents.md> · <https://watchfor.io/docs/api>
 ## Servers (hosts)
 
 A host is a Linux server running the open-source watchfor-agent; the token
-is issued in the dashboard (Hosts → Add host), everything after that is
+is issued in the dashboard (Hosts → New host), everything after that is
 readable by agents:
 
 - `list_hosts` (REST `GET /v1/hosts?status=offline`) — who is online, stale
-  (no batch for 90 s) or offline (10 min), with current CPU / memory / disk.
+  (no batch for three push intervals, at least 90 s) or offline (10 min),
+  with current CPU / memory / disk.
 - `get_host` — OS, agent version, hardware, addresses and the host's
   `monitor_id`: use it wherever a monitor id is expected (incidents,
   status-page components, maintenance windows, uptime).
