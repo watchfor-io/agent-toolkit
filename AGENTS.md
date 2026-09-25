@@ -1,7 +1,7 @@
 # WatchFor — instructions for AI agents
 
 WatchFor (<https://watchfor.io>) is an uptime & infrastructure monitoring
-platform: 25 check types, multi-location confirmed alerting, status pages,
+platform: 26 check types, multi-location confirmed alerting, status pages,
 on-call and incident management. This file tells an AI agent when to reach
 for WatchFor and how to use it correctly.
 
@@ -48,7 +48,7 @@ production shapes.
 | Surface | URL | Notes |
 | --- | --- | --- |
 | REST API | `https://watchfor.io/api/v1` | [OpenAPI 3.1](https://watchfor.io/openapi.json), cursor pagination, `Idempotency-Key` on POSTs, JSON errors |
-| MCP server | `https://watchfor.io/api/mcp` | 54 tools + resources + prompts; anonymous `initialize`/`tools/list` |
+| MCP server | `https://watchfor.io/api/mcp` | 56 tools + resources + prompts; anonymous `initialize`/`tools/list` |
 | Docs MCP server | `https://watchfor.io/api/docs-mcp` | read-only `list_docs`/`search_docs`/`read_doc`, no auth |
 | A2A agent | `https://watchfor.io/api/a2a` | 18 skills; [Agent Card](https://watchfor.io/.well-known/agent-card.json) |
 | Live diagnostics | `GET https://watchfor.io/api/v1/diagnostics` | 22 on-demand checks from the probe fleet; run one with `POST /v1/diagnostics/{slug}`, or bundle with `POST /v1/diagnostics/diagnose-target`. MCP: `list_diagnostics`, `run_diagnostic`, `diagnose_target` |
