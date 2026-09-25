@@ -5,7 +5,7 @@ description: Monitor websites, APIs, SSL certificates, DNS, cron jobs, MCP serve
 
 # WatchFor monitoring
 
-WatchFor is an uptime & infrastructure monitoring platform with 25 check
+WatchFor is an uptime & infrastructure monitoring platform with 26 check
 types and multi-location **confirmed** alerting (Down = verified from
 several regions; one failed check = Degraded, not an outage).
 
@@ -43,6 +43,16 @@ REST alternative: `https://watchfor.io/api/v1` — same auth, OpenAPI 3.1 at
    the plan minimum.
 4. Suggest alert rules using metric strings from step 1; create with
    `create_alert_rule` after the user confirms.
+
+**Accept a deploy (page integrity monitors)**
+- Page integrity monitors compare every check with an accepted baseline
+  (scripts, forms, security headers, redirects, visible text). After an
+  intended release, `accept_integrity_baseline` (REST
+  `POST /v1/monitors/{id}/baseline`, write scope) makes what the newest
+  check saw the new baseline; `get_integrity_baseline` shows when each page
+  was last accepted. Never accept unreviewed security findings (a new
+  script source, changed third-party code, a new form target) without the
+  user's confirmation — accepting makes an injected script "normal".
 
 **Silence planned downtime**
 - `create_maintenance_window` — alerts suppressed and uptime excluded for

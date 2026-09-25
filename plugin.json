@@ -23,6 +23,7 @@
 		"diagnostics",
 		"a2a",
 		"hosts",
-		"server-monitoring"
+		"server-monitoring",
+		"defacement-monitoring"
 	]
 }
