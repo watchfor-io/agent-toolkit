@@ -1,11 +1,11 @@
 ---
 name: watchfor-monitoring
-description: Monitor websites, APIs, SSL certificates, DNS, cron jobs, MCP servers and Linux servers (hosts running watchfor-agent) with WatchFor (watchfor.io). Use when the user wants to check whether something is up, diagnose an outage or incident, create/manage uptime monitors or alert rules, schedule maintenance windows, or get uptime/reliability reports. Works via the WatchFor REST API or MCP server with an API key or OAuth.
+description: Monitor websites, APIs, SSL certificates, DNS, cron jobs, MCP servers, Playwright browser journeys and Linux servers (hosts running watchfor-agent) with WatchFor (watchfor.io). Use when the user wants to check whether something is up, diagnose an outage or incident, create/manage uptime monitors or alert rules, schedule maintenance windows, or get uptime/reliability reports. Works via the WatchFor REST API or MCP server with an API key or OAuth.
 ---
 
 # WatchFor monitoring
 
-WatchFor is an uptime & infrastructure monitoring platform with 26 check
+WatchFor is an uptime & infrastructure monitoring platform with 27 check
 types and multi-location **confirmed** alerting (Down = verified from
 several regions; one failed check = Degraded, not an outage).
 
@@ -53,6 +53,23 @@ REST alternative: `https://watchfor.io/api/v1` — same auth, OpenAPI 3.1 at
   was last accepted. Never accept unreviewed security findings (a new
   script source, changed third-party code, a new form target) without the
   user's confirmation — accepting makes an injected script "normal".
+
+**Test a Playwright script before saving it (browser checks)**
+1. Write a normal `@playwright/test` file: `test.step(...)` per user-visible
+   step, web-first `expect`s, `process.env.TARGET_URL` for the site and
+   `process.env.NAME` for organization variables and secrets (never inline
+   a password).
+2. `test_playwright_script` (write scope; REST `POST /v1/playwright/test-runs`)
+   with `script` and `target` — runs it once in a sandboxed browser without
+   saving. A script error comes back as `400` naming the line. If the answer
+   lists `missing_variables`, ask the user to add them (Settings → Variables,
+   secrets for passwords) — do not rewrite the script around them.
+3. If it is still running, poll `get_playwright_run` with `test_run_id`. On a
+   failure, read the failed step, its error and code frame, then fix and
+   test again.
+4. Once it passes, `create_monitor` with `type: "playwright"`, the site as
+   `target` and `config.script`. Later failures: `list_playwright_runs`
+   (`status=failed`) → `get_playwright_run` with `monitor_id` + `run_id`.
 
 **Silence planned downtime**
 - `create_maintenance_window` — alerts suppressed and uptime excluded for
