@@ -4,7 +4,7 @@
 
 Agent-facing tooling for **[WatchFor](https://watchfor.io)** — uptime & infrastructure monitoring built to be operated by AI agents as comfortably as by humans.
 
-WatchFor monitors websites, APIs, SSL certificates, DNS, email, cron jobs and MCP servers from multiple regions worldwide, with **multi-location confirmed alerting**: a failure is only declared *Down* once several locations agree, so alerts reflect real outages rather than one bad network path.
+WatchFor monitors websites, APIs, SSL certificates, DNS, email, cron jobs, MCP servers and scripted browser journeys (Playwright) from multiple regions worldwide, with **multi-location confirmed alerting**: a failure is only declared *Down* once several locations agree, so alerts reflect real outages rather than one bad network path.
 
 ## What's in this repo
 
@@ -19,8 +19,8 @@ WatchFor monitors websites, APIs, SSL certificates, DNS, email, cron jobs and MC
 
 All surfaces share the same auth (org-scoped API key or OAuth 2.1) and per-plan rate limits:
 
-- **REST API** — `https://watchfor.io/api/v1` · [OpenAPI 3.1 spec](https://watchfor.io/openapi.json) (74 operations, cursor pagination, `Idempotency-Key`, typed JSON errors)
-- **MCP server** (56 tools, Streamable HTTP) — `https://watchfor.io/api/mcp` · [manifest](https://watchfor.io/.well-known/mcp.json) · [Smithery listing](https://smithery.ai/servers/hello-65wl/watchfor)
+- **REST API** — `https://watchfor.io/api/v1` · [OpenAPI 3.1 spec](https://watchfor.io/openapi.json) (83 operations, cursor pagination, `Idempotency-Key`, typed JSON errors)
+- **MCP server** (59 tools, Streamable HTTP) — `https://watchfor.io/api/mcp` · [manifest](https://watchfor.io/.well-known/mcp.json) · [Smithery listing](https://smithery.ai/servers/hello-65wl/watchfor)
 - **Documentation MCP server** (read-only, no auth) — `https://watchfor.io/api/docs-mcp`
 - **A2A agent** (18 skills, JSON-RPC) — `https://watchfor.io/api/a2a` · [Agent Card](https://watchfor.io/.well-known/agent-card.json)
 - **No-auth sandbox** — `https://watchfor.io/api/v1/sandbox` (sample data in exact production shapes)
@@ -38,6 +38,18 @@ allowance with the dashboard's Toolbox.
 - REST — `POST /v1/diagnostics/{slug}` · catalog at `GET /v1/diagnostics`
 - MCP — `list_diagnostics`, `run_diagnostic`, `diagnose_target`
 - A2A — the `diagnose` skill
+
+### Browser checks (Playwright)
+
+An agent can write a plain `@playwright/test` script for a login, search or
+checkout, run it once in a sandboxed browser before anything is saved, read
+the failed step with its error, and save the passing script as a scheduled
+[browser check](https://watchfor.io/playwright-monitoring). Secrets stay in
+organization variables (`process.env.NAME`) and are masked in results.
+
+- REST — `POST /v1/playwright/test-runs`, `GET /v1/monitors/{id}/runs`
+- MCP — `test_playwright_script`, `get_playwright_run`, `list_playwright_runs`, then `create_monitor` with `type: "playwright"`
+- A2A — `manage-monitor` with `action: "test-script"`
 
 ## SDKs
 
