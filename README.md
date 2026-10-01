@@ -55,11 +55,11 @@ organization variables (`process.env.NAME`) and are masked in results.
 
 Official zero-dependency clients + `watchfor` CLI, mirroring the REST API resource for resource:
 
-| Language | Install | Registry |
+| Language | Install | Version |
 | --- | --- | --- |
-| TypeScript / Node | `npm install watchfor` | [npm](https://www.npmjs.com/package/watchfor) |
-| Python | `pip install watchfor` | [PyPI](https://pypi.org/project/watchfor/) |
-| Ruby | `gem install watchfor` | [RubyGems](https://rubygems.org/gems/watchfor) |
+| TypeScript / Node | `npm install watchfor` | [![npm](https://img.shields.io/npm/v/watchfor)](https://www.npmjs.com/package/watchfor) |
+| Python | `pip install watchfor` | [![PyPI](https://img.shields.io/pypi/v/watchfor)](https://pypi.org/project/watchfor/) |
+| Ruby | `gem install watchfor` | [![Gem](https://img.shields.io/gem/v/watchfor)](https://rubygems.org/gems/watchfor) |
 
 ## Quickstart (60 seconds)
 
