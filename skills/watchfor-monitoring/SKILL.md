@@ -56,10 +56,13 @@ REST alternative: `https://watchfor.io/api/v1` — same auth, OpenAPI 3.1 at
   (scripts, forms, security headers, redirects, visible text). After an
   intended release, `accept_integrity_baseline` (REST
   `POST /v1/monitors/{id}/baseline`, write scope) makes what the newest
-  check saw the new baseline and starts a check, so the open findings close
-  on it. Accept only after a check has seen the release: `run_check_now`,
-  wait until `get_monitor_checks` shows a newer check, then accept —
-  otherwise the pre-release state becomes the baseline.
+  check saw the new baseline; when nothing else differs the open integrity
+  incidents resolve at once, otherwise a check starts and they close on it.
+  Right after a release pass `fresh: true` (REST `?fresh=true`): the pages
+  are checked first and that check is accepted — otherwise the pre-release
+  state becomes the baseline. `status: "pending"` means the check is still
+  running; the accept finishes on its own (see `fresh_accept` in
+  `get_integrity_baseline`).
   `get_integrity_baseline` shows when each page was last accepted. Never accept unreviewed security findings (a new
   script source, changed third-party code, a new form target) without the
   user's confirmation — accepting makes an injected script "normal".
