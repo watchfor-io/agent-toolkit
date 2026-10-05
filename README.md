@@ -29,8 +29,9 @@ All surfaces share the same auth (org-scoped API key or OAuth 2.1) and per-plan 
 
 ### Live diagnostics
 
-Agents can also *investigate*, not just read: 22 on-demand checks run from the probe
-fleet — DNS, DNS propagation, TLS grade, HTTP headers, ping, traceroute, ports,
+Agents can also *investigate*, not just read: 23 on-demand checks run from the probe
+fleet — DNS, DNS propagation, TLS grade, mail server grade (SMTP, IMAP, POP3), HTTP
+headers, ping, traceroute, ports,
 blocklists, e-mail policy, Core Web Vitals, global CDN analysis and more — plus
 `diagnose_target`, which bundles the common ones into a single verdict. A model can
 reason about a website; it has no machine in 20 locations. Runs share the plan
