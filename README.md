@@ -29,11 +29,12 @@ All surfaces share the same auth (org-scoped API key or OAuth 2.1) and per-plan 
 
 ### Live diagnostics
 
-Agents can also *investigate*, not just read: 23 on-demand checks run from the probe
-fleet — DNS, DNS propagation, TLS grade, mail server grade (SMTP, IMAP, POP3), HTTP
+Agents can also *investigate*, not just read: 24 on-demand checks run from the probe
+fleet — DNS, DNS propagation, DNS health, TLS grade, mail server grade (SMTP, IMAP, POP3), HTTP
 headers, ping, traceroute, ports,
 blocklists, e-mail policy, Core Web Vitals, global CDN analysis and more — plus
-`diagnose_target`, which bundles the common ones into a single verdict. A model can
+`diagnose_target`, which bundles the common ones into a single verdict. Graded checks
+return the dashboard's A+ to F grade with what capped it and the fix. A model can
 reason about a website; it has no machine in 20 locations. Runs share the plan
 allowance with the dashboard's Toolbox.
 
