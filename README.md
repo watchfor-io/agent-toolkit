@@ -47,6 +47,9 @@ checkout, run it once in a sandboxed browser before anything is saved, read
 the failed step with its error, and save the passing script as a scheduled
 [browser check](https://watchfor.io/playwright-monitoring). Secrets stay in
 organization variables (`process.env.NAME`) and are masked in results.
+HTTP, API and MCP checks use the same org secrets as `{{NAME}}` in auth
+fields, headers and request bodies; credentials stored on a check are
+write-only and read back as `"[redacted]"`.
 
 - REST — `POST /v1/playwright/test-runs`, `GET /v1/monitors/{id}/runs`
 - MCP — `test_playwright_script`, `get_playwright_run`, `list_playwright_runs`, then `create_monitor` with `type: "playwright"`

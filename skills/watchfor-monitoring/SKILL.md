@@ -5,7 +5,7 @@ description: Monitor websites, APIs, SSL certificates, DNS, cron jobs, MCP serve
 
 # WatchFor monitoring
 
-WatchFor is an uptime & infrastructure monitoring platform with 27 check
+WatchFor is an uptime & infrastructure monitoring platform with 30 check
 types and multi-location **confirmed** alerting (Down = verified from
 several regions; one failed check = Degraded, not an outage).
 
@@ -40,7 +40,14 @@ REST alternative: `https://watchfor.io/api/v1` — same auth, OpenAPI 3.1 at
    format, config fields and the EXACT alert-metric strings.
 2. `list_locations` for location ids.
 3. `create_monitor` (write scope) — interval is seconds, validated against
-   the plan minimum.
+   the plan minimum. Credentials (mailbox/FTP passwords, HTTP auth
+   passwords, bearer tokens, `Authorization` / `Cookie` / `X-API-Key`
+   header values) are write-only: reads return `"[redacted]"`; omit them
+   (or send the mask back) to keep the stored value, and never save the
+   mask as a value. To share a token across checks, ask the user to add it
+   as an org secret (Settings → Variables) and reference it as `{{NAME}}`
+   in the auth field, header value or request body. Moving a check to
+   another host needs the credential again.
 4. Suggest alert rules using metric strings from step 1; create with
    `create_alert_rule` after the user confirms.
 
