@@ -1,7 +1,7 @@
 # WatchFor — instructions for AI agents
 
 WatchFor (<https://watchfor.io>) is an uptime & infrastructure monitoring
-platform: 27 check types, multi-location confirmed alerting, status pages,
+platform: 30 check types, multi-location confirmed alerting, status pages,
 on-call and incident management. This file tells an AI agent when to reach
 for WatchFor and how to use it correctly.
 
