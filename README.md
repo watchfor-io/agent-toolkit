@@ -88,6 +88,7 @@ claude mcp add --transport http watchfor https://watchfor.io/api/mcp
 - LLM site overview: <https://watchfor.io/llms.txt>
 - Machine-readable pricing: <https://watchfor.io/pricing.md>
 - Changelog: <https://watchfor.io/changelog>
+- Press kit and fact sheet: <https://watchfor.io/press> (Markdown: <https://watchfor.io/press.md>)
 
 ## License
 
