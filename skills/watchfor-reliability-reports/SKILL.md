@@ -24,6 +24,11 @@ MCP server `https://watchfor.io/api/mcp` (OAuth 2.1 or
    (maintenance windows are already excluded from uptime).
 4. `list_incidents` for the period — durations and the rules that fired;
    group by monitor to find repeat offenders.
+5. For the whole report (the one the dashboard and the weekly email show),
+   `get_report` with `period` (`7d`, `30d`). A custom period (`from`/`to`,
+   up to 92 days) and a scope (`monitor_ids`, `tags` — e.g. one client's
+   tag) are *advanced reports*: Pro, Business and Enterprise. On Free and
+   Starter those options are refused; `period` alone always works.
 
 ## Structure the output
 
@@ -39,5 +44,11 @@ MCP server `https://watchfor.io/api/mcp` (OAuth 2.1 or
 - State the period explicitly in every number you report.
 - Uptime excludes maintenance windows by design — say so when relevant.
 - Do not extrapolate SLA compliance beyond the requested window.
+- History follows the plan: uptime and incidents are kept forever on every
+  plan; charts and reports 3 months (Free) up to 5 years (Business);
+  individual check results 30–180 days. A longer window is cut to what the
+  plan keeps and the answer says so (`meta.history` in `get_report`,
+  `X-History-Limit-Days` / `X-History-Earliest` over REST) — mention it
+  instead of reporting a shorter period as if it were the one asked for.
 
-Docs: <https://watchfor.io/docs/api> · Status model: <https://watchfor.io/docs/core-concepts>
+Docs: <https://watchfor.io/docs/api> · Reports: <https://watchfor.io/docs/reports> · Data history: <https://watchfor.io/docs/organization/data-retention> · Status model: <https://watchfor.io/docs/core-concepts>
