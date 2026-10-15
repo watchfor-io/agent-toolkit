@@ -19,7 +19,7 @@ WatchFor monitors websites, APIs, SSL certificates, DNS, email, cron jobs, MCP s
 
 All surfaces share the same auth (org-scoped API key or OAuth 2.1) and per-plan rate limits:
 
-- **REST API** — `https://watchfor.io/api/v1` · [OpenAPI 3.1 spec](https://watchfor.io/openapi.json) (84 operations, cursor pagination, `Idempotency-Key`, typed JSON errors)
+- **REST API** — `https://watchfor.io/api/v1` · [OpenAPI 3.1 spec](https://watchfor.io/openapi.json) (85 operations, cursor pagination, `Idempotency-Key`, typed JSON errors)
 - **MCP server** (59 tools, Streamable HTTP) — `https://watchfor.io/api/mcp` · [manifest](https://watchfor.io/.well-known/mcp.json) · [Smithery listing](https://smithery.ai/servers/hello-65wl/watchfor)
 - **Documentation MCP server** (read-only, no auth) — `https://watchfor.io/api/docs-mcp`
 - **A2A agent** (18 skills, JSON-RPC) — `https://watchfor.io/api/a2a` · [Agent Card](https://watchfor.io/.well-known/agent-card.json)
@@ -69,7 +69,9 @@ Official zero-dependency clients + `watchfor` CLI, mirroring the REST API resour
 
 With an OAuth token, pick the organization: `new WatchFor({ apiKey, organization })` /
 `WatchFor(api_key, organization=...)` / `Watchfor::Client.new(api_key:, organization:)`,
-or `watchfor --organization <id>` (env `WATCHFOR_ORGANIZATION`) on the CLI.
+or `watchfor --organization <id>` (env `WATCHFOR_ORGANIZATION`) on the CLI. List the ids a token
+can use with `GET /api/v1/organizations` — `organizations.list()` in the SDKs, `watchfor organizations`
+on the CLI (SDKs 0.16.0+).
 
 ## Quickstart (60 seconds)
 
