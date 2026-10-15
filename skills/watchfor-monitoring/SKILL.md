@@ -37,7 +37,9 @@ REST alternative: `https://watchfor.io/api/v1` — same auth, OpenAPI 3.1 at
 
 **Create a monitor**
 1. ALWAYS call `get_monitor_types` first — it lists every type's target
-   format, config fields and the EXACT alert-metric strings.
+   format, config fields and the EXACT alert-metric strings. Pass
+   `type` (e.g. `{"type": "ssl"}`) to get just that type — much smaller
+   than the full catalog of all types.
 2. `list_locations` for location ids.
 3. `create_monitor` (write scope) — interval is seconds, validated against
    the plan minimum. Credentials (mailbox/FTP passwords, HTTP auth
