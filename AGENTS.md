@@ -40,7 +40,10 @@ Two options, both revocable instantly:
 2. **OAuth 2.1** (MCP authorization spec): dynamic client registration +
    PKCE + explicit user consent. Discovery:
    `https://watchfor.io/.well-known/oauth-authorization-server`.
-   OAuth-capable MCP clients need no manual key at all.
+   OAuth-capable MCP clients need no manual key at all. An OAuth token acts
+   as the approving user: send `X-WatchFor-Organization: <organization id>`
+   to pick one of their organizations (default: their oldest owned one, else
+   their oldest membership). API keys are bound to one organization.
 
 Onboarding is fully self-serve: free plan (no credit card), instant key
 generation, and a **no-auth sandbox** at
