@@ -43,7 +43,8 @@ Two options, both revocable instantly:
    OAuth-capable MCP clients need no manual key at all. An OAuth token acts
    as the approving user: send `X-WatchFor-Organization: <organization id>`
    to pick one of their organizations (default: their oldest owned one, else
-   their oldest membership). API keys are bound to one organization.
+   their oldest membership); `GET /api/v1/organizations` lists the ids a
+   token can use. API keys are bound to one organization.
 
 Onboarding is fully self-serve: free plan (no credit card), instant key
 generation, and a **no-auth sandbox** at
