@@ -67,6 +67,10 @@ Official zero-dependency clients + `watchfor` CLI, mirroring the REST API resour
 | Python | `pip install watchfor` | [![PyPI](https://img.shields.io/pypi/v/watchfor)](https://pypi.org/project/watchfor/) |
 | Ruby | `gem install watchfor` | [![Gem](https://img.shields.io/gem/v/watchfor)](https://rubygems.org/gems/watchfor) |
 
+With an OAuth token, pick the organization: `new WatchFor({ apiKey, organization })` /
+`WatchFor(api_key, organization=...)` / `Watchfor::Client.new(api_key:, organization:)`,
+or `watchfor --organization <id>` (env `WATCHFOR_ORGANIZATION`) on the CLI.
+
 ## Quickstart (60 seconds)
 
 ```bash
