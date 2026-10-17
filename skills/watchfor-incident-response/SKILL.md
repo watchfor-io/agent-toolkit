@@ -37,6 +37,17 @@ likely cause, one concrete next step.
   excludes the window from uptime, **without pausing checks**. Prefer this
   over pausing monitors.
 
+## Post-mortem (write)
+
+- `get_postmortem` — the incident's post-mortem draft (`postmortem: null`
+  when none exists yet).
+- `update_postmortem` — creates the draft on first call, then updates it:
+  `title`, `severity`, `root_cause_category`, `status` (`draft` /
+  `completed`), `sections` (only the named ones are replaced) and
+  `add_timeline` / `add_action_items` (append, repeats skipped). Write only
+  facts from `get_incident` (timeline, root cause, duration); mark unknowns
+  as not known yet instead of guessing, and label follow-ups as suggestions.
+
 ## Rules
 
 - Never resolve an incident you have not explained — acknowledge instead.
