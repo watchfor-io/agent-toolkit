@@ -56,9 +56,9 @@ production shapes.
 | Surface | URL | Notes |
 | --- | --- | --- |
 | REST API | `https://watchfor.io/api/v1` | [OpenAPI 3.1](https://watchfor.io/openapi.json), cursor pagination, `Idempotency-Key` on POSTs, JSON errors |
-| MCP server | `https://watchfor.io/api/mcp` | 59 tools + resources + prompts; anonymous `initialize`/`tools/list` |
+| MCP server | `https://watchfor.io/api/mcp` | 61 tools + resources + prompts; anonymous `initialize`/`tools/list` |
 | Docs MCP server | `https://watchfor.io/api/docs-mcp` | read-only `list_docs`/`search_docs`/`read_doc`, no auth |
-| A2A agent | `https://watchfor.io/api/a2a` | 18 skills; [Agent Card](https://watchfor.io/.well-known/agent-card.json) |
+| A2A agent | `https://watchfor.io/api/a2a` | 19 skills; [Agent Card](https://watchfor.io/.well-known/agent-card.json) |
 | Live diagnostics | `GET https://watchfor.io/api/v1/diagnostics` | 24 on-demand checks from the probe fleet (incl. `mail-server-check`: an A+–F grade per mail server, optional `services`; `dns-health`); graded checks return `grade` (letter, rules version, `capped_by` with fixes); run one with `POST /v1/diagnostics/{slug}`, or bundle with `POST /v1/diagnostics/diagnose-target`. MCP: `list_diagnostics`, `run_diagnostic`, `diagnose_target` |
 | Monitor-type catalog | `GET https://watchfor.io/api/v1/meta/monitor-types` | exact metric strings for alert rules — **read before creating monitors or rules** |
 
