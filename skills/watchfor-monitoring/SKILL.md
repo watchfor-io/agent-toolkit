@@ -27,6 +27,15 @@ REST alternative: `https://watchfor.io/api/v1` — same auth, OpenAPI 3.1 at
 1. `get_summary` (MCP) or `GET /api/v1/summary` — monitor counts by status,
    active incidents, health score. One call answers the question.
 
+**What does this monitor say right now?**
+1. `get_monitor` (MCP) or `GET /api/v1/monitors/{id}` — the `latest` block
+   reports the newest result in the type's own terms (`kind` = the monitor
+   type): days until a domain or certificate expires with registrar and
+   registry status, HTTP status and TTFB, blacklist listings, SPF / DMARC /
+   DKIM, Core Web Vitals, the failing Playwright step, NTP offset and more.
+   Unmeasured fields are `null`. For domain and certificate monitors talk
+   about days left and validity, not response time.
+
 **Diagnose what's broken**
 1. `get_summary` → if incidents are active:
 2. `list_incidents` with `status=firing` — each incident includes the exact
