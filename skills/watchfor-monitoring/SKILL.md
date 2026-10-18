@@ -82,6 +82,23 @@ REST alternative: `https://watchfor.io/api/v1` — same auth, OpenAPI 3.1 at
   script source, changed third-party code, a new form target) without the
   user's confirmation — accepting makes an injected script "normal".
 
+**Expected change (MCP server releases)**
+- MCP monitors open a Tool Inventory Changed (drift) incident when tools are
+  added, removed or reworded. Before a planned deploy, set a release marker:
+  `set_expected_change_window` with `window_minutes` (REST
+  `POST /v1/monitors/{id}/expected-change?window=30`, write scope; 1–60
+  minutes, default 15). Only the drift rules go quiet — downtime still
+  pages — and drift incidents opened in the window resolve within a minute.
+  Pick a window longer than the rollout plus one check interval; 12 markers
+  per hour per monitor. Page integrity monitors use
+  `accept_integrity_baseline` with `fresh: true` instead (400 here).
+- A drift incident that was the user's own release: `accept_expected_change`
+  (REST `POST /v1/incidents/{id}/expected-change`, optional `note`) resolves
+  it and records "Accepted as expected" on the drift timeline. Ask the user
+  first — an unexpected description change can be an MCP rug-pull. Other
+  incidents → 400; use `resolve_incident`. A2A: `manage-incident` with
+  `action: "expected-change"`.
+
 **Test a Playwright script before saving it (browser checks)**
 1. Write a normal `@playwright/test` file: `test.step(...)` per user-visible
    step, web-first `expect`s, `process.env.TARGET_URL` for the site and
