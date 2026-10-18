@@ -21,6 +21,11 @@ Use WatchFor when the user asks to:
   incident carries the rule that fired and its duration), then
   `GET /api/v1/monitors/{id}/checks?success=false` for the failing probes;
 - **silence planned downtime** — `POST /api/v1/maintenance-windows`;
+- **ship an MCP server release** without a drift page — set a release marker
+  before the deploy (`POST /api/v1/monitors/{id}/expected-change?window=30`,
+  MCP `set_expected_change_window`); a Tool Inventory Changed incident the
+  user confirms was theirs → `POST /api/v1/incidents/{id}/expected-change`
+  (MCP `accept_expected_change`);
 - **route alerts** to a person or channel — contacts + contact-groups
   endpoints (email, Slack, Discord, Telegram, PagerDuty and 12+ more).
 
@@ -56,7 +61,7 @@ production shapes.
 | Surface | URL | Notes |
 | --- | --- | --- |
 | REST API | `https://watchfor.io/api/v1` | [OpenAPI 3.1](https://watchfor.io/openapi.json), cursor pagination, `Idempotency-Key` on POSTs, JSON errors |
-| MCP server | `https://watchfor.io/api/mcp` | 61 tools + resources + prompts; anonymous `initialize`/`tools/list` |
+| MCP server | `https://watchfor.io/api/mcp` | 63 tools + resources + prompts; anonymous `initialize`/`tools/list` |
 | Docs MCP server | `https://watchfor.io/api/docs-mcp` | read-only `list_docs`/`search_docs`/`read_doc`, no auth |
 | A2A agent | `https://watchfor.io/api/a2a` | 19 skills; [Agent Card](https://watchfor.io/.well-known/agent-card.json) |
 | Live diagnostics | `GET https://watchfor.io/api/v1/diagnostics` | 24 on-demand checks from the probe fleet (incl. `mail-server-check`: an A+–F grade per mail server, optional `services`; `dns-health`); graded checks return `grade` (letter, rules version, `capped_by` with fixes); run one with `POST /v1/diagnostics/{slug}` (top-level `success: false` + `error` means the check found a problem — NXDOMAIN, expired certificate, unreachable host; details in `result`), or bundle with `POST /v1/diagnostics/diagnose-target`. MCP: `list_diagnostics`, `run_diagnostic`, `diagnose_target` |
