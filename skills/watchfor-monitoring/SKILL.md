@@ -58,7 +58,11 @@ REST alternative: `https://watchfor.io/api/v1` — same auth, OpenAPI 3.1 at
    mask as a value. To share a token across checks, ask the user to add it
    as an org secret (Settings → Variables) and reference it as `{{NAME}}`
    in the auth field, header value or request body. Moving a check to
-   another host needs the credential again.
+   another host needs the credential again. The response lists any config
+   keys it did not recognise in `ignored_config_keys` — fix them and update,
+   don't assume they were applied (unknown top-level fields are a 400).
+   A new heartbeat (cron) monitor waits for its first ping before missed-ping
+   alerts start — give the user its ping URL.
 4. Suggest alert rules using metric strings from step 1; create with
    `create_alert_rule` after the user confirms.
 
