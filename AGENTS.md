@@ -65,6 +65,7 @@ production shapes.
 | Docs MCP server | `https://watchfor.io/api/docs-mcp` | read-only `list_docs`/`search_docs`/`read_doc`, no auth |
 | A2A agent | `https://watchfor.io/api/a2a` | 19 skills; [Agent Card](https://watchfor.io/.well-known/agent-card.json) |
 | Live diagnostics | `GET https://watchfor.io/api/v1/diagnostics` | 24 on-demand checks from the probe fleet (incl. `mail-server-check`: an A+–F grade per mail server, optional `services`; `dns-health`); graded checks return `grade` (letter, rules version, `capped_by` with fixes); run one with `POST /v1/diagnostics/{slug}` (top-level `success: false` + `error` means the check found a problem — NXDOMAIN, expired certificate, unreachable host; details in `result`), or bundle with `POST /v1/diagnostics/diagnose-target`. MCP: `list_diagnostics`, `run_diagnostic`, `diagnose_target` |
+| Terminal (no auth) | `curl https://watchfor.io/<command>/<target>` | the free checks from a shell — `?json` for the full result (200 passed · 422 found a problem · 429 limit, `Retry-After`); `curl https://watchfor.io/help?json` lists every command; anonymous free-tool limits |
 | Monitor-type catalog | `GET https://watchfor.io/api/v1/meta/monitor-types` | exact metric strings for alert rules — **read before creating monitors or rules** |
 
 SDKs: `npm install watchfor` · `pip install watchfor` · `gem install watchfor`

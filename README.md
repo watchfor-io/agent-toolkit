@@ -42,6 +42,16 @@ allowance with the dashboard's Toolbox.
 - MCP — `list_diagnostics`, `run_diagnostic`, `diagnose_target`
 - A2A — the `diagnose` skill
 
+### No key, just a shell: `curl https://watchfor.io`
+
+An agent that only has a terminal can run the same free checks anonymously:
+`curl https://watchfor.io/<command>/<target>` — `tls/github.com`, `dns/example.com`,
+`mtr/1.1.1.1`, `email/example.com`, `audit/example.com` for the whole site in one grade.
+Add `?json` for the full result with honest HTTP status codes (200 passed, 422 found a
+problem, 429 limit reached, with `Retry-After`); `curl https://watchfor.io/help?json` lists
+every command. Same anonymous limits as the website's free tools; for anything recurring,
+use the API or MCP with a key. [watchfor.io/terminal](https://watchfor.io/terminal)
+
 ### Browser checks (Playwright)
 
 An agent can write a plain `@playwright/test` script for a login, search or
