@@ -5,7 +5,7 @@ description: Monitor websites, APIs, SSL certificates, DNS, cron jobs, MCP serve
 
 # WatchFor monitoring
 
-WatchFor is an uptime & infrastructure monitoring platform with 30 check
+WatchFor is an uptime & infrastructure monitoring platform with 31 check
 types and multi-location **confirmed** alerting (Down = verified from
 several regions; one failed check = Degraded, not an outage).
 
