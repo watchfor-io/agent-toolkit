@@ -29,7 +29,7 @@ All surfaces share the same auth (org-scoped API key or OAuth 2.1) and per-plan 
 
 ### Live diagnostics
 
-Agents can also *investigate*, not just read: 26 on-demand checks run from the probe
+Agents can also *investigate*, not just read: 27 on-demand checks run from the probe
 fleet — DNS, DNS propagation, DNS health, TLS grade, mail server grade (SMTP, IMAP, POP3), PHP
 version (php2shell, end of life, CVEs), software exposure (versions a site reveals, outdated
 components, known CVEs), HTTP headers, ping, traceroute, ports,
