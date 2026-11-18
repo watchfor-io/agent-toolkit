@@ -24,6 +24,9 @@ Acknowledge/resolve need `write` scope.
    failing probes with per-location error detail (timeouts vs 5xx vs DNS
    failures tell different stories).
 4. `list_notifications` — confirm alerts were delivered (channel + status).
+   Nothing sent? `get_monitor` → `has_notification_route: false` means the
+   incident reached nobody (empty contact group, no channel, or channels
+   that take warnings only) — say so and point to the group.
 
 Report per incident: monitor, rule, duration, per-location evidence, most
 likely cause, one concrete next step.

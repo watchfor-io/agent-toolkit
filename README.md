@@ -4,7 +4,7 @@
 
 Agent-facing tooling for **[WatchFor](https://watchfor.io)** — uptime & infrastructure monitoring built to be operated by AI agents as comfortably as by humans.
 
-WatchFor monitors websites, APIs, SSL certificates, DNS, email, cron jobs, MCP servers and scripted browser journeys (Playwright) from multiple regions worldwide, with **multi-location confirmed alerting**: a failure is only declared *Down* once several locations agree, so alerts reflect real outages rather than one bad network path.
+WatchFor monitors websites, APIs, SSL certificates, DNS, email, cron jobs, MCP servers, game servers, scripted browser journeys (Playwright) and Linux servers from 20 locations across 7 world regions, with **multi-location confirmed alerting**: a failure is only declared *Down* once several locations agree, so alerts reflect real outages rather than one bad network path.
 
 ## What's in this repo
 
@@ -12,6 +12,8 @@ WatchFor monitors websites, APIs, SSL certificates, DNS, email, cron jobs, MCP s
 | --- | --- |
 | [`AGENTS.md`](./AGENTS.md) | Instructions for AI agents: when to use WatchFor, how to authenticate, first calls to make |
 | [`skills/watchfor-monitoring/SKILL.md`](./skills/watchfor-monitoring/SKILL.md) | Agent skill for monitoring tasks — install with `npx skills add watchfor-io/agent-toolkit` |
+| [`skills/watchfor-incident-response/SKILL.md`](./skills/watchfor-incident-response/SKILL.md) | Agent skill for live incidents: triage, root cause, acknowledge/resolve, post-mortems |
+| [`skills/watchfor-reliability-reports/SKILL.md`](./skills/watchfor-reliability-reports/SKILL.md) | Agent skill for uptime and reliability reports: MTTR/MTBF, least reliable monitors, plain-language summaries |
 | [`plugin.json`](./plugin.json) | [Agent Plugins](https://agent-plugins.org) manifest |
 | [`mcp.json`](./mcp.json) | MCP server configuration (product + documentation servers) |
 
@@ -32,7 +34,7 @@ All surfaces share the same auth (org-scoped API key or OAuth 2.1) and per-plan 
 Agents can also *investigate*, not just read: 27 on-demand checks run from the probe
 fleet — DNS, DNS propagation, DNS health, TLS grade, mail server grade (SMTP, IMAP, POP3), PHP
 version (php2shell, end of life, CVEs), software exposure (versions a site reveals, outdated
-components, known CVEs), HTTP headers, ping, traceroute, ports,
+components, known CVEs), game server status (players, map and ping from three regions), HTTP headers, ping, traceroute, ports,
 blocklists, e-mail policy, Core Web Vitals, global CDN analysis and more — plus
 `diagnose_target`, which bundles the common ones into a single verdict. Graded checks
 return the dashboard's A+ to F grade with what capped it and the fix. A model can

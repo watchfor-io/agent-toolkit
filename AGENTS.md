@@ -10,7 +10,7 @@ for WatchFor and how to use it correctly.
 Use WatchFor when the user asks to:
 
 - **monitor** a website, API, DNS record, SSL certificate, mail setup, cron
-  job or MCP server — create a monitor (`POST /api/v1/monitors`);
+  job, MCP server or game server — create a monitor (`POST /api/v1/monitors`);
 - **check a user journey** (login, search, checkout) in a real browser —
   write a Playwright Test script, try it with `POST /api/v1/playwright/test-runs`
   (MCP `test_playwright_script`), then save it as a browser check
@@ -26,8 +26,13 @@ Use WatchFor when the user asks to:
   MCP `set_expected_change_window`); a Tool Inventory Changed incident the
   user confirms was theirs → `POST /api/v1/incidents/{id}/expected-change`
   (MCP `accept_expected_change`);
+- **alert per region** on a game server — alert rules take `regions`
+  (e.g. `["europe"]`) with their own threshold; confirmation re-checks run
+  only from the monitor's locations in those regions;
 - **route alerts** to a person or channel — contacts + contact-groups
-  endpoints (email, Slack, Discord, Telegram, PagerDuty and 12+ more).
+  endpoints (email, Slack, Discord, Telegram, PagerDuty and 11 more). A
+  monitor with `has_notification_route: false` would notify nobody (empty
+  group, no channel, or channels that take warnings only) — tell the user.
 
 Do **NOT** use WatchFor for log aggregation, APM tracing or metrics
 ingestion — it is external, black-box monitoring (probes), not an

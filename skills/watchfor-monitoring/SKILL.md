@@ -1,6 +1,6 @@
 ---
 name: watchfor-monitoring
-description: Monitor websites, APIs, SSL certificates, DNS, cron jobs, MCP servers, Playwright browser journeys and Linux servers (hosts running watchfor-agent) with WatchFor (watchfor.io). Use when the user wants to check whether something is up, diagnose an outage or incident, create/manage uptime monitors or alert rules, schedule maintenance windows, or get uptime/reliability reports. Works via the WatchFor REST API or MCP server with an API key or OAuth.
+description: Monitor websites, APIs, SSL certificates, DNS, cron jobs, MCP servers, game servers, Playwright browser journeys and Linux servers (hosts running watchfor-agent) with WatchFor (watchfor.io). Use when the user wants to check whether something is up, diagnose an outage or incident, create/manage uptime monitors or alert rules, schedule maintenance windows, or get uptime/reliability reports. Works via the WatchFor REST API or MCP server with an API key or OAuth.
 ---
 
 # WatchFor monitoring
@@ -65,6 +65,23 @@ REST alternative: `https://watchfor.io/api/v1` — same auth, OpenAPI 3.1 at
    alerts start — give the user its ping URL.
 4. Suggest alert rules using metric strings from step 1; create with
    `create_alert_rule` after the user confirms.
+5. Check `has_notification_route` on the monitor: `false` means an incident
+   would notify nobody — no contact group, an empty one, no enabled channel,
+   or channels that take warnings only (an escalation policy counts). Tell
+   the user instead of assuming alerts go out.
+
+**Game servers: alerts per region, packet loss**
+- On game server monitors `create_alert_rule` / `update_alert_rule` take
+  `regions` (`europe`, `north-america`, `south-america`, `asia`,
+  `middle-east`, `africa`, `oceania`). The rule judges only checks from
+  those regions and its confirmation re-checks run only from the monitor's
+  locations there. A region rule takes over from the all-regions rule of the
+  same metric and severity, e.g. "Europe > 100 ms" next to "all other
+  regions > 300 ms". Omit for all regions; on update `null` or `[]` resets.
+- UDP monitors and UDP games (Steam A2S, Minecraft Bedrock, SA-MP / open.mp,
+  MTA) measure packet loss, round trip and jitter per check with
+  `config.packetLoss` (on for new monitors; `config.packetCount` 3–10).
+  The `latest` block carries `packet_loss_pct` and `jitter_ms`.
 
 **Accept a deploy (page integrity monitors)**
 - Page integrity monitors compare every check with an accepted baseline
