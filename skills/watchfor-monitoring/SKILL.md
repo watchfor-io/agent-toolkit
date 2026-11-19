@@ -71,13 +71,18 @@ REST alternative: `https://watchfor.io/api/v1` — same auth, OpenAPI 3.1 at
    the user instead of assuming alerts go out.
 
 **Game servers: alerts per region, packet loss**
-- On game server monitors `create_alert_rule` / `update_alert_rule` take
-  `regions` (`europe`, `north-america`, `south-america`, `asia`,
-  `middle-east`, `africa`, `oceania`). The rule judges only checks from
-  those regions and its confirmation re-checks run only from the monitor's
-  locations there. A region rule takes over from the all-regions rule of the
-  same metric and severity, e.g. "Europe > 100 ms" next to "all other
-  regions > 300 ms". Omit for all regions; on update `null` or `[]` resets.
+- On game server latency rules (`metrics['game.query_rtt_ms']`)
+  `create_alert_rule` / `update_alert_rule` take `regions` (`europe`,
+  `north-america`, `south-america`, `asia`, `middle-east`, `africa`,
+  `oceania`). The rule judges only checks from those regions and its
+  confirmation re-checks run only from the monitor's locations there, so
+  each region is judged on its own. A region rule takes over from the
+  all-regions rule of the same metric and severity, e.g. "Europe > 100 ms"
+  next to "all other regions > 300 ms"; a region no enabled rule of a
+  severity covers is never alerted at that severity (checks still recorded).
+  Omit for all regions; on update `null` or `[]` resets. Every other rule —
+  Game Server Offline included — is judged from every region: `regions`
+  there is refused with 400.
 - UDP monitors and UDP games (Steam A2S, Minecraft Bedrock, SA-MP / open.mp,
   MTA) measure packet loss, round trip and jitter per check with
   `config.packetLoss` (on for new monitors; `config.packetCount` 3–10).
@@ -104,10 +109,11 @@ REST alternative: `https://watchfor.io/api/v1` — same auth, OpenAPI 3.1 at
   added, removed or reworded. Before a planned deploy, set a release marker:
   `set_expected_change_window` with `window_minutes` (REST
   `POST /v1/monitors/{id}/expected-change?window=30`, write scope; 1–60
-  minutes, default 15). Only the drift rules go quiet — downtime still
-  pages — and drift incidents opened in the window resolve within a minute.
-  Pick a window longer than the rollout plus one check interval; 12 markers
-  per hour per monitor. Page integrity monitors use
+  minutes, default 15). During the window, tool-inventory drift doesn't
+  open an incident; the change is recorded in the drift timeline as
+  "Expected — release marker". Only the drift rules are covered — downtime
+  still pages. Pick a window longer than the rollout plus one check from
+  each of the monitor's locations; 12 markers per hour per monitor. Page integrity monitors use
   `accept_integrity_baseline` with `fresh: true` instead (400 here).
 - A drift incident that was the user's own release: `accept_expected_change`
   (REST `POST /v1/incidents/{id}/expected-change`, optional `note`) resolves

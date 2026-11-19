@@ -23,12 +23,15 @@ Use WatchFor when the user asks to:
 - **silence planned downtime** — `POST /api/v1/maintenance-windows`;
 - **ship an MCP server release** without a drift page — set a release marker
   before the deploy (`POST /api/v1/monitors/{id}/expected-change?window=30`,
-  MCP `set_expected_change_window`); a Tool Inventory Changed incident the
-  user confirms was theirs → `POST /api/v1/incidents/{id}/expected-change`
-  (MCP `accept_expected_change`);
-- **alert per region** on a game server — alert rules take `regions`
-  (e.g. `["europe"]`) with their own threshold; confirmation re-checks run
-  only from the monitor's locations in those regions;
+  MCP `set_expected_change_window`) — during the window a tool change opens
+  no incident and is recorded as "Expected — release marker"; a Tool
+  Inventory Changed incident outside it that the user confirms was theirs →
+  `POST /api/v1/incidents/{id}/expected-change` (MCP `accept_expected_change`);
+- **alert per region** on a game server — latency rules
+  (`metrics['game.query_rtt_ms']`) take `regions` (e.g. `["europe"]`) with
+  their own threshold, judged and confirmed only from the monitor's
+  locations in those regions; every other rule, Offline included, is judged
+  from every region (`regions` there is a 400);
 - **route alerts** to a person or channel — contacts + contact-groups
   endpoints (email, Slack, Discord, Telegram, PagerDuty and 11 more). A
   monitor with `has_notification_route: false` would notify nobody (empty
