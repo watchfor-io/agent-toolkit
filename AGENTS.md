@@ -31,7 +31,11 @@ Use WatchFor when the user asks to:
   (`metrics['game.query_rtt_ms']`) take `regions` (e.g. `["europe"]`) with
   their own threshold, judged and confirmed only from the monitor's
   locations in those regions; every other rule, Offline included, is judged
-  from every region (`regions` there is a 400);
+  from every region (`regions` there is a 400). For values,
+  `GET /api/v1/monitors/{id}/suggested-thresholds` (MCP
+  `get_suggested_thresholds`) suggests warning/critical per region from
+  the monitor's own checks (7-day p95 plus headroom) — offer them to the
+  user before creating the rules;
 - **route alerts** to a person or channel — contacts + contact-groups
   endpoints (email, Slack, Discord, Telegram, PagerDuty and 11 more). A
   monitor with `has_notification_route: false` would notify nobody (empty
@@ -69,7 +73,7 @@ production shapes.
 | Surface | URL | Notes |
 | --- | --- | --- |
 | REST API | `https://watchfor.io/api/v1` | [OpenAPI 3.1](https://watchfor.io/openapi.json), cursor pagination, `Idempotency-Key` on POSTs, JSON errors |
-| MCP server | `https://watchfor.io/api/mcp` | 63 tools + resources + prompts; anonymous `initialize`/`tools/list` |
+| MCP server | `https://watchfor.io/api/mcp` | 64 tools + resources + prompts; anonymous `initialize`/`tools/list` |
 | Docs MCP server | `https://watchfor.io/api/docs-mcp` | read-only `list_docs`/`search_docs`/`read_doc`, no auth |
 | A2A agent | `https://watchfor.io/api/a2a` | 19 skills; [Agent Card](https://watchfor.io/.well-known/agent-card.json) |
 | Live diagnostics | `GET https://watchfor.io/api/v1/diagnostics` | 27 on-demand checks from the probe fleet (incl. `game-server-check`: players, map, version and ping of a game server from three regions; `mail-server-check`: an A+–F grade per mail server, optional `services`; `dns-health`; `php-version-checker`: the PHP version a site reveals vs php2shell, end of life and CVEs; `software-exposure-checker`: every version a site reveals, outdated components and known CVEs); graded checks return `grade` (letter, rules version, `capped_by` with fixes); run one with `POST /v1/diagnostics/{slug}` (top-level `success: false` + `error` means the check found a problem — NXDOMAIN, expired certificate, unreachable host; details in `result`), or bundle with `POST /v1/diagnostics/diagnose-target`. MCP: `list_diagnostics`, `run_diagnostic`, `diagnose_target` |
