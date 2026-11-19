@@ -84,6 +84,12 @@ REST alternative: `https://watchfor.io/api/v1` — same auth, OpenAPI 3.1 at
   merged: an omitted key is kept, `null` removes it. The credential rules
   above apply: a new host, port, TLS mode or login needs the credential
   again in the same call.
+- HTTP body match: send `config.keywordValue` (with `keywordMode`
+  `contains` / `not_contains`, `keywordPatternType`, `keywordCaseInsensitive`)
+  OR the regexp `failIfBodyNotMatchesRegexp` / `failIfBodyMatchesRegexp` —
+  a keyword is compiled into the regexp the check evaluates; both with
+  different meanings is a 400. `confirmationThreshold`, `durationWindow`
+  and `notificationGroupIds` in `config` apply to every rule of the monitor.
 - `set_monitor_paused` — pause or resume (idempotent; resuming queues one
   check). For planned work prefer a maintenance window.
 - `run_check_now` — one immediate check (plan-limited per hour); the result
