@@ -27,16 +27,16 @@ Use WatchFor when the user asks to:
   no incident and is recorded as "Expected — release marker"; a Tool
   Inventory Changed incident outside it that the user confirms was theirs →
   `POST /api/v1/incidents/{id}/expected-change` (MCP `accept_expected_change`);
-- **alert per region** on a game server — latency and packet loss rules
-  (`metrics['game.query_rtt_ms']`, `metrics['game.packet_loss_percent']`)
-  take `regions` (e.g. `["europe"]`) with their own threshold, judged and
-  confirmed only from the monitor's locations in those regions; every other
-  rule, Offline and jitter included, is judged from every region
-  (`regions` there is a 400). For values,
-  `GET /api/v1/monitors/{id}/suggested-thresholds?metric=latency|packet_loss`
-  (MCP `get_suggested_thresholds`, `metric`) suggests warning/critical per
-  region from the monitor's own checks (7-day p95 plus headroom) — offer
-  them to the user before creating the rules;
+- **alert per region** — network-distance rules (latency, packet loss,
+  jitter: the metrics marked `region_scoped: true` in
+  `GET /api/v1/meta/monitor-types`, e.g. HTTP `response_time`, game
+  `metrics['game.query_rtt_ms']`) take `regions` (e.g. `["europe"]`) with
+  their own threshold, judged and confirmed only from the monitor's
+  locations in those regions; every other rule, Offline included, is judged
+  from every region (`regions` there is a 400). For values,
+  `GET /api/v1/monitors/{id}/suggested-thresholds?metric=…` (MCP
+  `get_suggested_thresholds`) suggests warning/critical per region from the
+  monitor's own checks — offer them to the user before creating the rules;
 - **route alerts** to a person or channel — contacts + contact-groups
   endpoints (email, Slack, Discord, Telegram, PagerDuty and 11 more). A
   monitor with `has_notification_route: false` would notify nobody (empty

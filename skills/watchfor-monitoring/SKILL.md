@@ -109,35 +109,36 @@ REST alternative: `https://watchfor.io/api/v1` — same auth, OpenAPI 3.1 at
   omitted keeps it). The organization's default group can't be deleted;
   confirm deletes with the user.
 
-**Game servers: alerts per region, packet loss**
-- On game server latency and packet loss rules
-  (`metrics['game.query_rtt_ms']`, `metrics['game.packet_loss_percent']`)
-  `create_alert_rule` / `update_alert_rule` take `regions` (`europe`,
-  `north-america`, `south-america`, `asia`, `middle-east`, `africa`,
-  `oceania`). The rule judges only checks from those regions and its
-  confirmation re-checks run only from the monitor's locations there, so
-  each region is judged on its own. A region rule takes over from the
-  all-regions rule of the same metric and severity, e.g. "Europe > 100 ms"
-  next to "all other regions > 300 ms"; a region no enabled rule of a
-  severity covers is never alerted at that severity (checks still recorded).
-  Omit for all regions; on update `null` or `[]` resets. Every other rule —
-  Game Server Offline and jitter included — is judged from every region:
-  `regions` there is refused with 400.
-- Don't guess latency or packet loss thresholds: `get_suggested_thresholds`
-  (REST `GET /v1/monitors/{id}/suggested-thresholds`, read-only; `metric`
-  `latency` by default or `packet_loss`) returns warning and critical per
-  region from the monitor's own checks (7-day p95, 24 h for a newer region).
-  Latency: warning = max(p95 × 1.3, p95 + 30 ms), critical = max(p95 × 1.8,
-  p95 + 80 ms). Packet loss (%, rule operator `>=`): warning = max(20,
-  p95 + 15), critical = max(60, p95 + 45), moved up to whole packet steps —
-  loss moves one packet at a time (5 packets per check = steps of 20 %), so
-  never set a loss threshold under one packet's worth (`packets_per_check`
-  in the answer). It also says which region the all-regions values come
-  from and which regions need their own. `ready: false` until a region has
-  enough answered checks; packet loss on a monitor that doesn't measure it
-  is a 400. Show the values to the user, then apply them with
-  `create_alert_rule` / `update_alert_rule` (`regions` for a region's own
-  rule).
+**Alerts per region (network-distance metrics), packet loss**
+- Network-distance rules — latency, packet loss and jitter metrics, marked
+  `region_scoped: true` in `get_monitor_types` / `get_monitor`
+  `available_metrics` (e.g. HTTP `response_time`, game
+  `metrics['game.query_rtt_ms']`) — take `regions` in `create_alert_rule` /
+  `update_alert_rule` (`europe`, `north-america`, `south-america`, `asia`,
+  `middle-east`, `africa`, `oceania`). The rule judges only checks from
+  those regions and its confirmation re-checks run only from the monitor's
+  locations there, so each region is judged on its own. A region rule
+  takes over from the all-regions rule of the same metric and severity,
+  e.g. "Europe > 100 ms" next to "all other regions > 300 ms"; a region no
+  enabled rule of a severity covers is never alerted at that severity
+  (checks still recorded). Omit for all regions; on update `null` or `[]`
+  resets. Every other rule — Offline first — is judged from every region:
+  `regions` there is refused with 400. Without `failure_threshold` a
+  network-distance rule confirms after 3 checks (both levels).
+- Don't guess network-distance thresholds: `get_suggested_thresholds` (REST
+  `GET /v1/monitors/{id}/suggested-thresholds`, read-only; `metric` = a
+  `region_scoped` metric of the monitor, or `latency` / `packet_loss` /
+  `jitter` for the type's first of that family) returns warning and
+  critical per region from the monitor's own checks (p95 and p99 over the
+  region's history up to 7 days; `method` spells out the formula). Packet
+  loss (%, rule operator `>=`) moves one packet at a time (5 packets per
+  check = steps of 20 %), so never set a loss threshold under one packet's
+  worth (`packets_per_check` in the answer). It also says which region the
+  all-regions values come from and which regions need their own.
+  `ready: false` until a region has enough checks; a metric the monitor
+  doesn't measure (packet loss off) is a 400. Show the values to the user,
+  then apply them with `create_alert_rule` / `update_alert_rule` (`regions`
+  for a region's own rule).
 - UDP monitors and UDP games (Steam A2S, Minecraft Bedrock, SA-MP / open.mp,
   MTA) measure packet loss, round trip and jitter per check with
   `config.packetLoss` (on for new monitors; `config.packetCount` 3–10).
