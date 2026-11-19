@@ -22,11 +22,28 @@ Acknowledge/resolve need `write` scope.
    fired** (metric, operator, threshold), severity and duration.
 3. For each affected monitor: `get_monitor_checks` with `success=false` —
    failing probes with per-location error detail (timeouts vs 5xx vs DNS
-   failures tell different stories).
+   failures tell different stories). `get_check_details` with a check's
+   `run_id` shows everything the probe saw on that run.
 4. `list_notifications` — confirm alerts were delivered (channel + status).
    Nothing sent? `get_monitor` → `has_notification_route: false` means the
    incident reached nobody (empty contact group, no channel, or channels
-   that take warnings only) — say so and point to the group.
+   that take warnings only) — say so and point to the group. `get_on_call`
+   says who is on call now and whether they can actually be paged — check
+   it before saying someone was notified.
+5. `list_activity` with `since` / `until` — who changed what (monitors,
+   rules, channels, maintenance), to line the incident up with recent
+   config changes.
+6. Not sure where it breaks? `diagnose_target` measures a host or URL live
+   in one call (DNS, propagation, TLS grade, HTTP headers, ping from up to 3
+   regions; needs a plan with location selection). `run_diagnostic` runs one
+   live check from the probe fleet (e.g. `dns-propagation`, `tls-grade`,
+   `port-checker`), also on targets you don't monitor; `list_diagnostics`
+   lists the checks, their options and the remaining allowance. These send
+   real traffic: write scope, and each spends plan allowance.
+7. What customers see: `list_status_pages` → `get_status_page` (overall
+   status, every component and the monitors behind it) and
+   `list_announcements` (published incidents and maintenance with their
+   update timeline).
 
 Report per incident: monitor, rule, duration, per-location evidence, most
 likely cause, one concrete next step.
@@ -39,6 +56,10 @@ likely cause, one concrete next step.
 - `create_maintenance_window` — for planned work: suppresses alerts and
   excludes the window from uptime, **without pausing checks**. Prefer this
   over pausing monitors.
+- `set_incident_uptime_exclusion` — once resolved, mark a false positive
+  (`excluded: true` with a `reason`): it stays on record but leaves uptime,
+  SLA, reports and the public status page. Firing or acknowledged → 409,
+  resolve first; `excluded: false` undoes it.
 
 ## Post-mortem (write)
 

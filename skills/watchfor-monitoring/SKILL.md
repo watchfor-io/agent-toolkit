@@ -41,7 +41,10 @@ REST alternative: `https://watchfor.io/api/v1` — same auth, OpenAPI 3.1 at
 2. `list_incidents` with `status=firing` — each incident includes the exact
    rule that fired (metric, operator, threshold) and its duration.
 3. `get_monitor_checks` with `success=false` for the affected monitor — the
-   failing probes with per-location detail.
+   failing probes with per-location detail. `get_check_details` with a
+   failing check's `run_id` returns everything the probe saw on that run
+   (HTTP headers and timings, TLS chain, DNS answers, assertion outcomes, the
+   error), secrets redacted.
 4. Report: affected monitor, rule, duration, likely cause, next step.
 
 **Create a monitor**
@@ -49,7 +52,8 @@ REST alternative: `https://watchfor.io/api/v1` — same auth, OpenAPI 3.1 at
    format, config fields and the EXACT alert-metric strings. Pass
    `type` (e.g. `{"type": "ssl"}`) to get just that type — much smaller
    than the full catalog of all types.
-2. `list_locations` for location ids.
+2. `list_locations` for location ids. `get_plan` shows the plan's limits
+   (`-1` = unlimited, `0` = feature off) next to live usage.
 3. `create_monitor` (write scope) — interval is seconds, validated against
    the plan minimum. Credentials (mailbox/FTP passwords, HTTP auth
    passwords, bearer tokens, `Authorization` / `Cookie` / `X-API-Key`
@@ -64,11 +68,37 @@ REST alternative: `https://watchfor.io/api/v1` — same auth, OpenAPI 3.1 at
    A new heartbeat (cron) monitor waits for its first ping before missed-ping
    alerts start — give the user its ping URL.
 4. Suggest alert rules using metric strings from step 1; create with
-   `create_alert_rule` after the user confirms.
+   `create_alert_rule` after the user confirms. `list_alert_rules` shows a
+   monitor's rules (system defaults + custom); `delete_alert_rule` removes a
+   custom one — a system default can't be deleted (403), disable it with
+   `update_alert_rule` `enabled: false`.
 5. Check `has_notification_route` on the monitor: `false` means an incident
    would notify nobody — no contact group, an empty one, no enabled channel,
    or channels that take warnings only (an escalation policy counts). Tell
    the user instead of assuming alerts go out.
+
+**Change an existing monitor**
+- `list_monitors` — slim, cursor-paginated list; filter by `type`,
+  `status`, `tag` or search name/target with `q`. `get_monitor` for detail.
+- `update_monitor` (write scope) — send only what changes. `config` is
+  merged: an omitted key is kept, `null` removes it. The credential rules
+  above apply: a new host, port, TLS mode or login needs the credential
+  again in the same call.
+- `set_monitor_paused` — pause or resume (idempotent; resuming queues one
+  check). For planned work prefer a maintenance window.
+- `run_check_now` — one immediate check (plan-limited per hour); the result
+  lands in `get_monitor_checks` within about a minute.
+
+**Who gets alerted**
+- `list_notification_channels` — Slack, PagerDuty, email, webhook… with
+  enabled flag, severity filter and the contact groups routed to each
+  (secrets redacted). `list_contact_groups` / `get_contact_group` (members:
+  who exactly gets paged) and `list_contacts` / `get_contact` for people.
+- Write scope: `create_contact` / `update_contact` / `delete_contact` and
+  `create_contact_group` / `update_contact_group` / `delete_contact_group`.
+  `group_ids` and `contact_ids` replace the whole list (`[]` empties it,
+  omitted keeps it). The organization's default group can't be deleted;
+  confirm deletes with the user.
 
 **Game servers: alerts per region, packet loss**
 - On game server latency rules (`metrics['game.query_rtt_ms']`)
@@ -151,6 +181,14 @@ REST alternative: `https://watchfor.io/api/v1` — same auth, OpenAPI 3.1 at
 **Silence planned downtime**
 - `create_maintenance_window` — alerts suppressed and uptime excluded for
   the window; checks keep running.
+- `list_maintenance_windows` with `state=active` ("is maintenance running
+  now?") or `state=upcoming`; `delete_maintenance_window` cancels one —
+  future occurrences removed, active silences lifted.
+
+**Report emails**
+- `get_report_schedules` / `set_report_schedule` — the weekly and monthly
+  report emails: enabled state and up to 5 recipients. Enabling needs a
+  recipient; clearing the recipients disables the cadence.
 
 ## Rules
 
@@ -158,6 +196,9 @@ REST alternative: `https://watchfor.io/api/v1` — same auth, OpenAPI 3.1 at
   retry; do not guess enum values.
 - `delete_monitor` is irreversible (removes rules + incident history):
   confirm with the user first.
+- `reset_monitor_history` is irreversible too: it deletes every check,
+  incident, post-mortem and delivery record but keeps the monitor with its
+  config and rules, and uptime starts over. Confirm first.
 - Back off on HTTP 429 using `Retry-After`.
 - Do not use WatchFor for logs, APM traces or metrics ingestion.
 
