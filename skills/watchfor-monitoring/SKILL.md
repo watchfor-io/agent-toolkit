@@ -91,7 +91,8 @@ REST alternative: `https://watchfor.io/api/v1` — same auth, OpenAPI 3.1 at
   different meanings is a 400. `confirmationThreshold`, `durationWindow`
   and `notificationGroupIds` in `config` apply to every rule of the monitor
   (`null` resets each rule to its own default; `notificationGroupIds: []` = nobody is
-  notified — confirm with the user). Setting a body match / expected value
+  notified — confirm with the user; an id that is not one of the organization's
+  contact groups is refused by name, nothing is saved). Setting a body match / expected value
   creates or switches on its alert rule; removing it switches the rule off.
 - `set_monitor_paused` — pause or resume (idempotent; resuming queues one
   check). For planned work prefer a maintenance window.
